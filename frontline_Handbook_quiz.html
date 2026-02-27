@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Frontline Support Engineer Handbook — 20 Question Quiz</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --card2:#0f1730;
+      --text:#e8ecff;
+      --muted:#a9b3e6;
+      --border:rgba(255,255,255,.12);
+      --accent:#7aa2ff;
+      --good:#35d07f;
+      --bad:#ff5d7a;
+      --warn:#ffd36e;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(122,162,255,.18), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(53,208,127,.12), transparent 55%),
+                  radial-gradient(800px 600px at 60% 90%, rgba(255,93,122,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    header{
+      max-width: 980px;
+      margin: 34px auto 10px;
+      padding: 0 16px;
+    }
+    .title{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size: 24px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size: 14px;
+      line-height:1.45;
+      max-width: 820px;
+    }
+    main{
+      max-width: 980px;
+      margin: 18px auto 60px;
+      padding: 0 16px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), transparent 55%), var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(122,162,255,.10), transparent 70%), var(--card2);
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border:1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .progressWrap{
+      flex:1;
+      min-width: 210px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .progress{
+      height:10px;
+      flex:1;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .progress > div{
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(122,162,255,1), rgba(53,208,127,1));
+      border-radius:999px;
+      transition: width .25s ease;
+    }
+    .content{
+      padding: 18px 16px 16px;
+    }
+    .qHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .qNum{
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+    .qText{
+      margin: 6px 0 0;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+    .answers{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+    }
+    .ans{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      transition: transform .05s ease, background .2s ease, border-color .2s ease;
+    }
+    .ans:hover{ background: rgba(255,255,255,.06); }
+    .ans:active{ transform: scale(.995); }
+    input[type="radio"]{
+      margin-top: 2px;
+      transform: scale(1.15);
+      accent-color: var(--accent);
+      cursor:pointer;
+    }
+    .ans label{
+      cursor:pointer;
+      flex:1;
+      user-select:none;
+      color: var(--text);
+      line-height:1.35;
+    }
+    .meta{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .explain{
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      display:none;
+    }
+    .explain strong{ color: var(--text); }
+    .btnRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 650;
+      letter-spacing:.2px;
+      transition: background .2s ease, transform .05s ease, border-color .2s ease;
+    }
+    button:hover{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.20); }
+    button:active{ transform: scale(.99); }
+    button.primary{
+      background: linear-gradient(90deg, rgba(122,162,255,.92), rgba(53,208,127,.92));
+      border-color: rgba(255,255,255,.18);
+      color:#091022;
+    }
+    button.primary:hover{ filter: brightness(1.03); }
+    button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .tag{
+      font-size:12px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .result{
+      padding: 16px;
+      border-top:1px solid var(--border);
+      display:none;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%), var(--card2);
+    }
+    .scoreLine{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .bigScore{
+      font-size: 22px;
+      margin:0;
+    }
+    .small{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .review{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 10px 12px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 650;
+      color: var(--text);
+    }
+    .revBody{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .good{ color: var(--good); font-weight: 700; }
+    .bad{ color: var(--bad); font-weight: 700; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 1px 7px;
+      border:1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+    }
+    footer{
+      max-width: 980px;
+      margin: 18px auto 30px;
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <div>
+        <h1>Frontline Support Engineer Handbook — 20 Question Quiz</h1>
+        <p class="sub">
+          Interactive quiz focused on the “core rules” that drive client satisfaction, security, and efficiency:
+          communication expectations, phones priority, timeboxing, escalations, security protocols, and ticket hygiene.
+        </p>
+      </div>
+      <div class="pill" title="Tip: You can use the keyboard too">
+        <span>⌨️</span>
+        <span>Keys: <span class="kbd">1-4</span> select • <span class="kbd">Enter</span> next</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card" id="quizCard">
+      <div class="bar">
+        <div class="progressWrap">
+          <div class="pill" id="pillStatus">Question <strong id="qIndex">1</strong> / <strong id="qTotal">20</strong></div>
+          <div class="progress" aria-label="progress">
+            <div id="progressFill"></div>
+          </div>
+        </div>
+        <div class="pill" id="pillScore">Score: <strong id="scoreNow">0</strong></div>
+      </div>
+
+      <div class="content">
+        <div class="qHead">
+          <div>
+            <p class="qNum" id="qTagLine">Category: —</p>
+            <p class="qText" id="qText">—</p>
+          </div>
+          <div class="tag" id="qTypeTag">Multiple Choice</div>
+        </div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="explain" id="explainBox"></div>
+
+        <div class="meta">
+          <div class="btnRow">
+            <button id="btnPrev" type="button">← Prev</button>
+            <button id="btnCheck" class="primary" type="button">Check Answer</button>
+            <button id="btnNext" type="button">Next →</button>
+          </div>
+          <div class="pill" id="pillSaved">Saved: <strong id="savedCount">0</strong>/20</div>
+        </div>
+      </div>
+
+      <div class="result" id="resultBox">
+        <div class="scoreLine">
+          <p class="bigScore" id="finalScore">Score: —</p>
+          <div class="btnRow">
+            <button id="btnReviewTop" type="button">Jump to Review</button>
+            <button id="btnRestart" class="primary" type="button">Restart Quiz</button>
+          </div>
+        </div>
+        <p class="small" id="finalMessage">—</p>
+        <div class="review" id="reviewList"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Built as a standalone HTML file. No external libraries. Local-only. ✅
+  </footer>
+
+<script>
+(() => {
+  const quiz = [
+    // 1
+    {
+      cat: "Client Communication",
+      type: "MCQ",
+      q: "According to the Golden Rule of client communication, what are the two things the client wants to know?",
+      choices: [
+        "What caused it, and who is responsible?",
+        "Can you fix it, and when will it be fixed?",
+        "How complex it is, and which tool you’ll use?",
+        "Whether it’s a Microsoft issue, and if it’s billable?"
+      ],
+      correct: 1,
+      explain: "The handbook says the client only wants to know: “Can you fix it?” and “When?” The answer to “Can you fix it?” is always YES — so you mainly communicate WHEN."
+    },
+    // 2
+    {
+      cat: "Phones & Priorities",
+      type: "MCQ",
+      q: "What is the number one priority for frontline engineers during the workday?",
+      choices: [
+        "Project work",
+        "Ticket documentation",
+        "Phones / inbound calls",
+        "On-site visits"
+      ],
+      correct: 2,
+      explain: "Inbound calls take priority over outbound tasks, projects, and on-site work. When the phone rings, you answer."
+    },
+    // 3
+    {
+      cat: "Phones & Planning",
+      type: "MCQ",
+      q: "When are phones busiest, and how should you plan your day?",
+      choices: [
+        "Afternoons; schedule all on-sites then",
+        "Mornings; delay projects/on-sites to the afternoon when possible",
+        "Evenings; do all follow-ups after hours",
+        "It varies; no guidance is given"
+      ],
+      correct: 1,
+      explain: "Phones are busiest in the morning. Plan accordingly—delay projects and on-site visits to the afternoon whenever possible."
+    },
+    // 4
+    {
+      cat: "Ticketing / Autotask",
+      type: "T/F",
+      q: "True or False: It’s okay to answer a call just to take a message, as long as you create a ticket afterward.",
+      choices: ["True", "False"],
+      correct: 1,
+      explain: "Policy: we never answer the call just to take a message. When you pick up, you work the problem immediately."
+    },
+    // 5
+    {
+      cat: "Troubleshooting",
+      type: "MCQ",
+      q: "What is the recommended timebox for initial troubleshooting before you stop and escalate or ask for help?",
+      choices: [
+        "5 minutes",
+        "10 minutes",
+        "15–20 minutes",
+        "45 minutes"
+      ],
+      correct: 2,
+      explain: "The 15–20 Minute Rule: time-box initial troubleshooting. If you don’t have a clear direction, STOP and escalate/ask for help."
+    },
+    // 6
+    {
+      cat: "Troubleshooting",
+      type: "MCQ",
+      q: "Which set lists the five initial diagnostic questions you should ask before making changes?",
+      choices: [
+        "Is it urgent? Is it billable? Can they reboot? Is it a Microsoft issue? Can we reimage?",
+        "Has it ever worked? When did it stop working? What changed? Is it reproducible? Is it isolated or widespread?",
+        "What OS? What version? What model? What antivirus? What browser?",
+        "Did they open a ticket? Did they call? Did they email? Did they schedule? Did they escalate?"
+      ],
+      correct: 1,
+      explain: "The handbook calls out five diagnostic questions: Has it ever worked, when did it stop, what changed, reproducible, isolated vs widespread."
+    },
+    // 7
+    {
+      cat: "Workflow Discipline",
+      type: "MCQ",
+      q: "In the structured troubleshooting workflow, what is a key rule about changes you make during testing?",
+      choices: [
+        "Change multiple things quickly to see what sticks",
+        "Always reinstall the application first",
+        "Test one controlled variable at a time",
+        "Skip logs if the user explains it clearly"
+      ],
+      correct: 2,
+      explain: "Don’t change multiple things simultaneously. Test one controlled variable at a time so you know what actually fixed it."
+    },
+    // 8
+    {
+      cat: "Before Taking Action",
+      type: "MCQ",
+      q: "Before you touch anything, what should you do first?",
+      choices: [
+        "Immediately reboot the device to clear issues",
+        "Document what you see (screenshots/error codes/logs) before making changes",
+        "Uninstall and reinstall any suspicious apps",
+        "Close the ticket and ask them to reopen if it persists"
+      ],
+      correct: 1,
+      explain: "Document what you see first (screenshots, error codes, logs), check monitoring/alerts, and verify symptoms before making changes."
+    },
+    // 9
+    {
+      cat: "Remote vs On-site",
+      type: "MCQ",
+      q: "What is the policy stance on going on-site?",
+      choices: [
+        "Go on-site immediately for any printer issue",
+        "Go on-site after the first failed fix attempt",
+        "Remote before on-site; travel is a last resort after exhausting remote options",
+        "On-site is preferred because it’s faster"
+      ],
+      correct: 2,
+      explain: "Travel time is high-cost. Exhaust remote options (Blitz, RMM, PowerShell, escalation) before going on-site."
+    },
+    // 10
+    {
+      cat: "Tools",
+      type: "MCQ",
+      q: "What tool is specifically described as your “window into the user’s experience” and should be used before troubleshooting blind?",
+      choices: ["Autotask", "Blitz", "PIA", "TimeZest"],
+      correct: 1,
+      explain: "Blitz is your window into the user’s experience—see what the user sees to reduce miscommunication and speed resolution."
+    },
+    // 11
+    {
+      cat: "Documentation",
+      type: "MCQ",
+      q: "Which is the best statement about the AI Note Taker?",
+      choices: [
+        "Use it only when a ticket is escalated",
+        "Use it on every support interaction for structured, consistent notes",
+        "Use it only for on-call work",
+        "Use it instead of updating tickets"
+      ],
+      correct: 1,
+      explain: "Use the AI Note Taker on every interaction. The notes become part of the ticket record and help continuity."
+    },
+    // 12
+    {
+      cat: "Security",
+      type: "MCQ",
+      q: "Where are passwords allowed to be delivered?",
+      choices: [
+        "In ticket notes if the ticket is internal-only",
+        "In email if the client requests it",
+        "Only via the MSP secure process (no exceptions)",
+        "By text message from your personal phone"
+      ],
+      correct: 2,
+      explain: "Passwords are NEVER included in tickets/emails/open communication. ALL passwords must be sent through the MSP secure process."
+    },
+    // 13
+    {
+      cat: "Security",
+      type: "MCQ",
+      q: "Before doing sensitive actions (password resets, permissions changes, access to sensitive data), what must you do?",
+      choices: [
+        "Ask them to confirm their date of birth",
+        "Verify identity using the MSP process to text and verify the user",
+        "Require a manager approval for every request",
+        "Ask for their workstation serial number"
+      ],
+      correct: 1,
+      explain: "User verification is required before sensitive actions—use the MSP process to text and verify the user."
+    },
+    // 14
+    {
+      cat: "Security Incidents",
+      type: "T/F",
+      q: "True or False: If you suspect phishing or unauthorized access, you should investigate it yourself first to gather evidence.",
+      choices: ["True", "False"],
+      correct: 1,
+      explain: "If you suspect a security incident, escalate immediately. Don’t investigate/resolve on your own. Notify lead/security contact and document what you observed."
+    },
+    // 15
+    {
+      cat: "Engineering Boundaries",
+      type: "MCQ",
+      q: "Which action is explicitly restricted and requires engineering approval?",
+      choices: [
+        "Running Blitz for a remote session",
+        "Rebooting servers",
+        "Updating a stale ticket",
+        "Using the AI Note Taker"
+      ],
+      correct: 1,
+      explain: "Restricted actions include rebooting servers, modifying firewall/network configs, removing/disabling security tools, and tenant-level changes—requires engineering approval."
+    },
+    // 16
+    {
+      cat: "Reload / Reimage",
+      type: "MCQ",
+      q: "Before reloading a PC, what must you verify first?",
+      choices: [
+        "That the user has a second monitor",
+        "That the hard drive is healthy using chkdsk /scan",
+        "That the BIOS is updated to the latest version",
+        "That Windows is activated"
+      ],
+      correct: 1,
+      explain: "Before reload/reimage, verify the drive is healthy. Run chkdsk with /scan. Don’t use /f at this initial stage."
+    },
+    // 17
+    {
+      cat: "Ticket Hygiene",
+      type: "MCQ",
+      q: "What defines a “stale ticket” in the handbook?",
+      choices: [
+        "No update in 1 day",
+        "No update in 3 days",
+        "Any ticket open longer than 7 days",
+        "Any ticket without time entries"
+      ],
+      correct: 1,
+      explain: "A stale ticket is any ticket with no updates in 3 days. Every open ticket must be updated at least once every 3 days—no exceptions."
+    },
+    // 18
+    {
+      cat: "Ownership & Responsiveness",
+      type: "MCQ",
+      q: "After a ticket is assigned to you, when must your first contact attempt occur?",
+      choices: [
+        "Within 30 minutes",
+        "Within 2 hours",
+        "By end of day",
+        "Only if the user replies"
+      ],
+      correct: 0,
+      explain: "30-Minute First Contact Rule: first contact attempt must occur within 30 minutes of assignment."
+    },
+    // 19
+    {
+      cat: "Closure Quality",
+      type: "MCQ",
+      q: "What is the rule about closing tickets?",
+      choices: [
+        "Close when you’re confident it’s fixed",
+        "Close after running a standard checklist, no user needed",
+        "Never close without user confirmation (phone or email)",
+        "Close immediately if the user goes quiet"
+      ],
+      correct: 2,
+      explain: "Never close a ticket without user confirmation. Don’t assume—get confirmation by phone or email."
+    },
+    // 20
+    {
+      cat: "On-Call",
+      type: "MCQ",
+      q: "What does the handbook say on-call covers?",
+      choices: [
+        "Only outages and emergencies",
+        "Only security incidents",
+        "All issues that come in during on-call hours, regardless of severity",
+        "Only tickets created via TimeZest"
+      ],
+      correct: 2,
+      explain: "On-call support is not limited to critical issues. We support ALL issues that come in during on-call hours."
+    }
+  ];
+
+  // State
+  let idx = 0;
+  const answers = new Array(quiz.length).fill(null);     // selected choice index
+  const checked = new Array(quiz.length).fill(false);    // whether "checked"
+  const correctMap = new Array(quiz.length).fill(null);  // true/false after check
+  let score = 0;
+
+  // Elements
+  const qIndexEl = document.getElementById("qIndex");
+  const qTotalEl = document.getElementById("qTotal");
+  const qTextEl = document.getElementById("qText");
+  const qTagLineEl = document.getElementById("qTagLine");
+  const qTypeTagEl = document.getElementById("qTypeTag");
+  const answersEl = document.getElementById("answers");
+  const explainBox = document.getElementById("explainBox");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const btnCheck = document.getElementById("btnCheck");
+  const progressFill = document.getElementById("progressFill");
+  const scoreNowEl = document.getElementById("scoreNow");
+  const savedCountEl = document.getElementById("savedCount");
+  const resultBox = document.getElementById("resultBox");
+  const finalScoreEl = document.getElementById("finalScore");
+  const finalMessageEl = document.getElementById("finalMessage");
+  const reviewListEl = document.getElementById("reviewList");
+  const btnRestart = document.getElementById("btnRestart");
+  const btnReviewTop = document.getElementById("btnReviewTop");
+
+  qTotalEl.textContent = String(quiz.length);
+
+  function computeScore(){
+    let s = 0;
+    for(let i=0;i<quiz.length;i++){
+      if(checked[i] && correctMap[i] === true) s++;
+    }
+    return s;
+  }
+
+  function savedCount(){
+    return answers.filter(v => v !== null).length;
+  }
+
+  function updateTopBar(){
+    qIndexEl.textContent = String(idx + 1);
+    score = computeScore();
+    scoreNowEl.textContent = String(score);
+    savedCountEl.textContent = String(savedCount());
+
+    const pct = Math.round(((idx) / (quiz.length - 1)) * 100);
+    progressFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+
+    btnPrev.disabled = idx === 0;
+    btnNext.disabled = idx === quiz.length - 1;
+  }
+
+  function setExplain(show, isCorrect){
+    if(!show){
+      explainBox.style.display = "none";
+      explainBox.innerHTML = "";
+      return;
+    }
+    const q = quiz[idx];
+    const status = isCorrect ? `<span class="good">Correct</span>` : `<span class="bad">Not quite</span>`;
+    explainBox.innerHTML = `<div><strong>${status}</strong> — ${q.explain}</div>`;
+    explainBox.style.display = "block";
+  }
+
+  function renderQuestion(){
+    const q = quiz[idx];
+    qTextEl.textContent = q.q;
+    qTagLineEl.textContent = `Category: ${q.cat}`;
+    qTypeTagEl.textContent = q.type === "T/F" ? "True / False" : "Multiple Choice";
+
+    answersEl.innerHTML = "";
+    setExplain(checked[idx], correctMap[idx] === true);
+
+    const groupName = `q_${idx}`;
+    q.choices.forEach((choice, cIdx) => {
+      const id = `${groupName}_${cIdx}`;
+      const wrapper = document.createElement("div");
+      wrapper.className = "ans";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = groupName;
+      radio.id = id;
+      radio.value = String(cIdx);
+      radio.checked = answers[idx] === cIdx;
+      radio.disabled = checked[idx]; // lock after checking
+
+      const label = document.createElement("label");
+      label.htmlFor = id;
+      label.textContent = choice;
+
+      wrapper.addEventListener("click", () => {
+        if(checked[idx]) return;
+        answers[idx] = cIdx;
+        // update radios
+        [...answersEl.querySelectorAll("input[type=radio]")].forEach(r => r.checked = false);
+        radio.checked = true;
+        updateTopBar();
+      });
+
+      wrapper.appendChild(radio);
+      wrapper.appendChild(label);
+
+      // After check, show correct/incorrect styling
+      if(checked[idx]){
+        const isCorrectChoice = (cIdx === q.correct);
+        const wasSelected = (answers[idx] === cIdx);
+        if(isCorrectChoice){
+          wrapper.style.borderColor = "rgba(53,208,127,.55)";
+          wrapper.style.background = "rgba(53,208,127,.10)";
+        }
+        if(wasSelected && !isCorrectChoice){
+          wrapper.style.borderColor = "rgba(255,93,122,.60)";
+          wrapper.style.background = "rgba(255,93,122,.10)";
+        }
+      }
+
+      answersEl.appendChild(wrapper);
+    });
+
+    // Check button state
+    btnCheck.disabled = (answers[idx] === null) || checked[idx];
+
+    updateTopBar();
+
+    // If last question and already checked, show results section
+    if(allChecked()){
+      showResults();
+    }else{
+      resultBox.style.display = "none";
+    }
+  }
+
+  function checkCurrent(){
+    const q = quiz[idx];
+    if(answers[idx] === null) return;
+
+    if(!checked[idx]){
+      checked[idx] = true;
+      const isCorrect = (answers[idx] === q.correct);
+      correctMap[idx] = isCorrect;
+    }
+    renderQuestion();
+  }
+
+  function allChecked(){
+    return checked.every(v => v === true);
+  }
+
+  function showResults(){
+    score = computeScore();
+    const pct = Math.round((score / quiz.length) * 100);
+    finalScoreEl.textContent = `Score: ${score} / ${quiz.length} (${pct}%)`;
+
+    let msg = "";
+    if(pct === 100) msg = "Perfect. You’re running the playbook exactly as written.";
+    else if(pct >= 90) msg = "Strong. Review the missed items and you’re basically locked in.";
+    else if(pct >= 75) msg = "Solid, but tighten up the core rules (phones, timeboxing, security, stale tickets, escalation).";
+    else if(pct >= 60) msg = "You’ve got the gist, but you’re missing some high-impact policy items. Re-read the key rules section.";
+    else msg = "Pause and reread the handbook sections on priorities, security, and ticket ownership. These are non-negotiables.";
+
+    finalMessageEl.textContent = msg;
+
+    // Build review
+    reviewListEl.innerHTML = "";
+    quiz.forEach((q, i) => {
+      const isCorrect = (correctMap[i] === true);
+      const chosen = answers[i];
+      const chosenText = chosen === null ? "(no answer)" : q.choices[chosen];
+      const correctText = q.choices[q.correct];
+
+      const d = document.createElement("details");
+      const s = document.createElement("summary");
+      s.innerHTML = `Q${i+1}: ${isCorrect ? '<span class="good">Correct</span>' : '<span class="bad">Incorrect</span>'} — ${q.cat}`;
+      const body = document.createElement("div");
+      body.className = "revBody";
+      body.innerHTML = `
+        <div><strong>Question:</strong> ${escapeHtml(q.q)}</div>
+        <div style="margin-top:6px;"><strong>Your answer:</strong> ${escapeHtml(chosenText)}</div>
+        <div style="margin-top:6px;"><strong>Correct answer:</strong> ${escapeHtml(correctText)}</div>
+        <div style="margin-top:8px;"><strong>Why:</strong> ${escapeHtml(q.explain)}</div>
+      `;
+      d.appendChild(s);
+      d.appendChild(body);
+      reviewListEl.appendChild(d);
+    });
+
+    resultBox.style.display = "block";
+    // Fill progress to 100 when done
+    progressFill.style.width = "100%";
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // Buttons
+  btnPrev.addEventListener("click", () => {
+    if(idx > 0){ idx--; renderQuestion(); }
+  });
+  btnNext.addEventListener("click", () => {
+    if(idx < quiz.length - 1){ idx++; renderQuestion(); }
+  });
+  btnCheck.addEventListener("click", () => {
+    checkCurrent();
+    // auto-show results when finished
+    if(allChecked()) showResults();
+  });
+
+  btnRestart.addEventListener("click", () => {
+    idx = 0;
+    for(let i=0;i<quiz.length;i++){
+      answers[i] = null;
+      checked[i] = false;
+      correctMap[i] = null;
+    }
+    score = 0;
+    resultBox.style.display = "none";
+    renderQuestion();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  });
+
+  btnReviewTop.addEventListener("click", () => {
+    resultBox.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  // Keyboard shortcuts: 1-4 selects, Enter checks/next
+  window.addEventListener("keydown", (e) => {
+    if(resultBox.style.display === "block" && allChecked()) return;
+
+    const q = quiz[idx];
+    const max = q.choices.length;
+    const n = parseInt(e.key, 10);
+
+    if(!Number.isNaN(n) && n >= 1 && n <= max){
+      if(checked[idx]) return;
+      answers[idx] = n - 1;
+      renderQuestion();
+      return;
+    }
+    if(e.key === "Enter"){
+      if(!checked[idx] && answers[idx] !== null){
+        checkCurrent();
+        if(allChecked()) showResults();
+      } else if(checked[idx] && idx < quiz.length - 1){
+        idx++;
+        renderQuestion();
+      }
+    }
+    if(e.key === "ArrowLeft") btnPrev.click();
+    if(e.key === "ArrowRight") btnNext.click();
+  });
+
+  // Initial render
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
